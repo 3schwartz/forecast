@@ -148,7 +148,7 @@ foreCopTest <- do.call(rbind, lapply(0:foreLength, function(returnsCop, wL, Copf
   if(any(class(x) != "cGARCHfit")) {
     rep(1, ncol(Period))
   } else {
-    preR = last(rmgarch::rcor(x),1)[,,1]
+    preR = rmgarch::last(rmgarch::rcor(x),1)[,,1]
   diag(preR) = 1
   maxGO = x@model$maxgarchOrder
   sim1 = rmgarch::cgarchsim(x, n.sim = 1, n.start = 0, m.sim = 1000, presigma = tail(rugarch::sigma(x), maxGO),

@@ -36,7 +36,7 @@ Cop_sim_Par <- function(Period = Period, foreLength = foreLength, windowLength =
     if(any(class(x) != "cGARCHfit")) {
       rep(1, ncol(ReturnsOffset))
     } else {
-      preR = last(rmgarch::rcor(x),1)[,,1]
+      preR = rmgarch::last(rmgarch::rcor(x),1)[,,1]
       diag(preR) = 1
       maxGO = x@model$maxgarchOrder
       sim1 = rmgarch::cgarchsim(x, n.sim = 1, n.start = 0, m.sim = m.sim, presigma = tail(rugarch::sigma(x), maxGO),

@@ -24,7 +24,7 @@ VAR_fore_Par <- function(Period = Period, foreLength = foreLength, windowLength 
   cl <- parallel::makeCluster(no_cores)
   parallel::clusterEvalQ(cl, library(dplyr))
 
-  forecastsVAR <- do.call(rbind, parLapply(cl, 0:foreLength, for_VAR_Par,
+  forecastsVAR <- do.call(rbind, parallel::parLapply(cl, 0:foreLength, for_VAR_Par,
                                            returnsVAR = Period, wL = windowLength)) %>%
     dplyr::as_tibble()
 

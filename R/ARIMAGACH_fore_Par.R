@@ -21,7 +21,7 @@ ARIMAGACH_fore_Par <- function(Period = Period, foreLength = foreLength, windowL
   cl <- parallel::makeCluster(no_cores)
   parallel::clusterEvalQ(cl, library(dplyr))
 
-  fore_Par <- parSapply(cl, 0:foreLength, arimaBacktest,
+  fore_Par <- parallel::parSapply(cl, 0:foreLength, arimaBacktest,
                         returns = Period, wL = windowLength)
 
   parallel::stopCluster(cl)

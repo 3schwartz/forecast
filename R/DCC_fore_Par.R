@@ -24,16 +24,17 @@ DCC_fore_Par  <- function(Period = Period, foreLength = foreLength, windowLength
   cl <- parallel::makeCluster(no_cores)
   parallel::clusterEvalQ(cl, library(dplyr))
 
-  forecastsDCC <- parLapply(cl, 0:foreLength, dcEvent::DCC_test_Par,
+  forecastsDCC <- parallel::parLapply(cl, 0:foreLength, dcEvent::DCC_test_Par,
                             returnsDCC = Period, wL = windowLength, ARIMAfit = FALSE)
   parallel::stopCluster(cl)
 
   foreDCC <- do.call(rbind, lapply(forecastsDCC, function(x) {
     if(any(class(x) != "DCCfit")) {
-      rep(1, ncol(Period))
+      return(rep(1, ncol(Period)))
     } else {
       fore <- rmgarch::dccforecast(x, n.ahead = 1, n.roll = 0)
-      return(as.numeric(ifelse(fitted(fore) < 0, -1, 1)))}})) %>%
+      return(as.numeric(ifelse(fitted(fore) < 0, -1, 1)))}
+    })) %>%
     dplyr::as_tibble()
 
   readr::write_csv(foreDCC, path=paste0(outDir, "forecasts_DCC_", version,".csv"))

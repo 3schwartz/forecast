@@ -6,7 +6,7 @@
 \usage{
 ARIMAGACH_fore_Par(Period = Period, foreLength = foreLength,
   windowLength = windowLength, ARIMAfit = TRUE, outDir = "./output/",
-  version = "v1", tickers = tickers)
+  version = "v1")
 }
 \arguments{
 \item{Period}{xts object of log returns (one-dim)}
@@ -20,8 +20,6 @@ ARIMAGACH_fore_Par(Period = Period, foreLength = foreLength,
 \item{outDir}{Output dir}
 
 \item{version}{Version  of dataset (if run multipe times and want to save each data)}
-
-\item{tickers}{Name of columns}
 }
 \value{
 Write to files position each day and its cumulative return
