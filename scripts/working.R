@@ -26,26 +26,26 @@ Name = "AAPL"
 
 # nrow(Period) = 204, foreLength = 104, windowLength = 100
 system.time(
-Cop_sim_Par(Period = Period, foreLength = foreLength, windowLength = windowLength,
-            ARIMAfit = FALSE, m.sim = 1000,
-            outDir = "./output/", version = "v1",
-            Name = Name, tickers = tickers)
-) # 652.21 s / 785.50 s / 653 s
+  Cop_sim_Par(Period = Period, foreLength = foreLength, windowLength = windowLength,
+              ARIMAfit = FALSE, m.sim = 1000,
+              outDir = "./output/", version = "v1",
+              Name = Name, tickers = tickers)
+) # 652.21 s / 785.50 s / 653 s / 583.70 s
 system.time(
-DCC_fore_Par(Period = Period, foreLength = foreLength, windowLength = windowLength,
-             ARIMAfit = FALSE, outDir = "./output/", version = "v1",
-             Name = Name, tickers = tickers)
-) # 515.98 s / 583.47 s
+  DCC_fore_Par(Period = Period, foreLength = foreLength, windowLength = windowLength,
+               ARIMAfit = FALSE, outDir = "./output/", version = "v1",
+               Name = Name, tickers = tickers)
+) # 515.98 s / 583.47 s / 493.63 s
 system.time(
-VAR_fore_Par(Period = Period, foreLength = foreLength, windowLength = windowLength,
-                         outDir = "./output/", version = "v1",
-                         Name = Name, tickers = tickers)
-) # 25.14 s / 11.85
+  VAR_fore_Par(Period = Period, foreLength = foreLength, windowLength = windowLength,
+               outDir = "./output/", version = "v1",
+               Name = Name, tickers = tickers)
+) # 25.14 s / 11.85 s / 10.44 s
 system.time(
-ARIMAGACH_fore_Par(Period = Period[, Name], foreLength = foreLength, windowLength = windowLength,
-                               ARIMAfit = TRUE,
-                               outDir = "./output/", version = "v1")
-) # 112.92 s / 91.42 s
+  ARIMAGACH_fore_Par(Period = Period[, Name], foreLength = foreLength, windowLength = windowLength,
+                     ARIMAfit = TRUE,
+                     outDir = "./output/", version = "v1")
+) # 112.92 s / 91.42 s / 80.68 s
 
 #### Uni ####
 Cop <- readr::read_csv("./output/forecasts_Cop_Uni_v1.csv")
@@ -120,9 +120,9 @@ VARMul <- readr::read_csv("./output/forecasts_VAR_Mul_v1.csv")
 
 All.Mul <- CopMul %>%
   transmute(Date = Date,
-            `Buy and Hold` = pull(CopMul, Name),
-            Cop = for_Copxts) %>%
-  mutate(DCC = pull(DCCMul, for_DCCxts),
+            `Buy and Hold` = BuyHoldCurve_Copmul,
+            Cop = ArimaGarchCurve_Copmul) %>%
+  mutate(DCC = pull(DCCMul, ArimaGarchCurve_DCCmul),
          VAR = pull(VARMul, ArimaGarchCurve_VAR))
 
 sharpe <- All.Mul %>%
@@ -147,7 +147,7 @@ for(i in 1:nrow(All.Mul)){
 }
 
 All.Mul.tidy.frame <- tidyr::gather(do.call(bind_rows, listAll.Mul),
-                                -Date, -Frame, key = "Strategy", value = "Return")
+                                    -Date, -Frame, key = "Strategy", value = "Return")
 readr::write_csv(All.Mul.tidy.frame, path = "./output/All_Mul_tidy_frame.csv")
 
 ggplot(All.Mul.tidy.frame, aes(x = Date, y = Return, color = Strategy)) +
@@ -161,7 +161,7 @@ ggplot(All.Mul.tidy.frame, aes(x = Date, y = Return, color = Strategy)) +
 ggsave(filename = "animate_Mul.pdf", path = "./output/",
        width = 8, height = 4, device = "pdf")
 
-p <- ggplot(All.Mul.tidy.frame, aes(x = Date, y = Return, color = Strategy)) +
+p_mul <- ggplot(All.Mul.tidy.frame, aes(x = Date, y = Return, color = Strategy)) +
   geom_line(size = 0.85) +
   ggtitle("Backtest of financial strategies") +
   scale_color_manual(values = c(RColorBrewer::brewer.pal(length(unique(All.Mul.tidy.frame$Strategy)),
@@ -171,7 +171,7 @@ p <- ggplot(All.Mul.tidy.frame, aes(x = Date, y = Return, color = Strategy)) +
   theme_classic() +
   theme(plot.title = element_text(size = 20, face = "bold"))
 
-animate(p, fps = 10, renderer = gifski_renderer(loop = FALSE),
+animate(p_mul, fps = 10, renderer = gifski_renderer(loop = FALSE),
         width = 800, height = 400)
 
 anim_save("./output/animation_Mul.gif")
