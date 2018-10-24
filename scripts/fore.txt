@@ -1,0 +1,12 @@
+https://www.quantstart.com/articles/ARIMA-GARCH-Trading-Strategy-on-the-SP500-Stock-Market-Index-Using-R - DONE
+
+https://github.com/qrmtutorial/qrm/blob/master/code/14_Multivariate_Time_Series/14_MGARCH_estimation.R
+
+https://rdrr.io/rforge/rgarch/man/dccroll-methods.html
+https://stats.stackexchange.com/questions/193125/rolling-forecast-with-dcc-garch-in-r
+https://rdrr.io/rforge/rgarch/man/cgarchsim-methods.html
+
+https://github.com/robjhyndman/MEFM-package
+
+https://www.rdocumentation.org/packages/gganimate/versions/0.1.1
+

@@ -1,0 +1,56 @@
+---
+title: "Untitled"
+author: "Soren Schwartz"
+date: "25 okt 2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+
+```
+
+## Data
+
+
+
+## Model
+
+- ARIMA+GARCH
+- VAR
+- DCC
+- Copula
+
+## Results
+
+```{r animate, fig.align = "center"}
+p <- ggplot(datadf, aes(x = x, y = y, col = sex)) +
+  geom_point(alpha = 0.7, size = 4) +
+  labs(title = 'Dato: {frame_time}', x = 'Lego klodser', y = "Antal syltetøjsglas") +
+  transition_time(period) +
+  ease_aes('linear') +
+  theme_classic()
+
+animate(p, renderer = gifski_renderer(loop = TRUE))
+```
+
+## Results
+
+```{r animate, fig.align = "center"}
+p <- ggplot(datadf, aes(x = x, y = y, col = sex)) +
+  geom_point(alpha = 0.7, size = 4) +
+  labs(title = 'Dato: {frame_time}', x = 'Lego klodser', y = "Antal syltetøjsglas") +
+  transition_time(period) +
+  ease_aes('linear') +
+  theme_classic()
+
+animate(p, renderer = gifski_renderer(loop = TRUE))
+```
+
+## Assumptions
+
+- If fit doesn't occure, long position is assumed
+
+### Code
+<http://rmarkdown.rstudio.com>
