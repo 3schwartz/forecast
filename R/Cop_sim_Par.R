@@ -74,8 +74,8 @@ Cop_sim_Par <- function(Period = Period, foreLength = foreLength, windowLength =
     ArimaGarchReturns_Cop = Intersect_Cop[,1] * Intersect_Cop[,2]
 
     # Create the backtests for ARIMA+GARCH and Buy & Hold
-    ArimaGarchCurve_Cop = exp( cumsum( ArimaGarchReturns_Cop )) - 1
-    BuyHoldCurve_Cop = exp( cumsum( Intersect_Cop[,2] )) - 1
+    ArimaGarchCurve_Cop = cumsum( ArimaGarchReturns_Cop )
+    BuyHoldCurve_Cop = cumsum( Intersect_Cop[,2] )
     CombinedCurve_Cop = merge( ArimaGarchCurve_Cop, BuyHoldCurve_Cop, all=F ) %>%
       dplyr::as_tibble() %>%
       dplyr::mutate(Date = zoo::index(BuyHoldCurve_Cop))
@@ -96,8 +96,8 @@ Cop_sim_Par <- function(Period = Period, foreLength = foreLength, windowLength =
   BuyHoldReturns_Copmul <- xts::xts(rowSums(Period[zoo::index(for_Copmulxts)] * (1/ncol(for_Copmulxts))),
                                     order.by = zoo::index(for_Copmulxts))
   # Create the backtests for ARIMA+GARCH and Buy & Hold
-  ArimaGarchCurve_Copmul = exp( cumsum( ArimaGarchReturns_Copmul )) - 1
-  BuyHoldCurve_Copmul = exp( cumsum( BuyHoldReturns_Copmul )) - 1
+  ArimaGarchCurve_Copmul = cumsum( ArimaGarchReturns_Copmul )
+  BuyHoldCurve_Copmul = cumsum( BuyHoldReturns_Copmul )
   CombinedCurve_Copmul = merge( ArimaGarchCurve_Copmul, BuyHoldCurve_Copmul, all=F ) %>%
     dplyr::as_tibble() %>%
     dplyr::mutate(Date = zoo::index(BuyHoldCurve_Copmul))

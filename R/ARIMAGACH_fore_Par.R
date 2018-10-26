@@ -43,8 +43,8 @@ ARIMAGACH_fore_Par <- function(Period = Period, foreLength = foreLength, windowL
   ArimaGarchReturns_Par = Intersect_Par[,1] * Intersect_Par[,2]
 
   # Create the backtests for ARIMA+GARCH and Buy & Hold
-  ArimaGarchCurve_Par = exp( cumsum( ArimaGarchReturns_Par )) - 1
-  BuyHoldCurve_Par = exp( cumsum( Intersect_Par[,2] )) - 1
+  ArimaGarchCurve_Par = cumsum( ArimaGarchReturns_Par )
+  BuyHoldCurve_Par = cumsum( Intersect_Par[,2] )
   # ArimaGarchCurve_Par = cumsum( ArimaGarchReturns_Par )
   # BuyHoldCurve_Par = cumsum( Intersect_Par[,2] )
   CombinedCurve_Par = merge( ArimaGarchCurve_Par, BuyHoldCurve_Par, all=F ) %>%
